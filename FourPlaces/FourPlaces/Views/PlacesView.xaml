@@ -5,9 +5,40 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="clr-namespace:FourPlaces.Dtos"
+             xmlns:model="clr-namespace:FourPlaces.Models"
              mc:Ignorable="d"
              x:Class="FourPlaces.Views.PlacesView">
-      <StackLayout>
-          <Label Text="Hello Xamarin.Forms!" />
-      </StackLayout>
+    
+    <StackLayout>
+        <StackLayout.Resources>
+            <model:ImgUrlConverter x:Key="ImgUrlConverter" />
+        </StackLayout.Resources>
+        <ScrollView
+            VerticalOptions="FillAndExpand">
+            <ListView  
+                ItemsSource="{Binding PlaceList}"
+                SelectedItem="{Binding SelectedPlace, Mode=TwoWay}"
+                RowHeight="100">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="local:PlaceItemSummary">
+                        <ViewCell>
+                            <Grid>
+                                <Label Grid.Row="0"
+                                       Grid.Column="0" 
+                                       Text="{Binding Title}" 
+                                       VerticalOptions="Center"
+                                       HorizontalOptions="Center"
+                                       FontSize="Medium"/>
+                                <Image Grid.Row="0"
+                                       Grid.Column="1"
+                                       Source="{Binding ImageId, Converter={StaticResource ImgUrlConverter}}"
+                                       Aspect="AspectFit" />
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </ScrollView>
+    </StackLayout>
 </forms:BaseContentPage>

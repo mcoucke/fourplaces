@@ -11,15 +11,9 @@ namespace FourPlaces.ViewModels
 {
     public class LoginViewModel : ViewModelBase
     {
-        private string url = "https://td-api.julienmialon.com/auth/login";
+        private string _url = "https://td-api.julienmialon.com/auth/login";
         private ApiClient _apiClient;
         public ICommand LoginCommand { get; }
-
-        public LoginViewModel()
-        {
-            _apiClient = new ApiClient();
-            LoginCommand = new Command(LoginAction);
-        }
 
         private string _username;
         public string Username
@@ -35,16 +29,21 @@ namespace FourPlaces.ViewModels
             set => SetProperty(ref _password, value);
         }
 
+        public LoginViewModel()
+        {
+            _apiClient = new ApiClient();
+            LoginCommand = new Command(LoginAction);
+        }
+
         private async void LoginAction()
         {
-            HttpResponseMessage response = await _apiClient.Execute(HttpMethod.Post, url, new LoginRequest() { Email = _username, Password = _password });
+            //HttpResponseMessage response = await _apiClient.Execute(HttpMethod.Post, _url, new LoginRequest() { Email = _username, Password = _password });
+            HttpResponseMessage response = await _apiClient.Execute(HttpMethod.Post, _url, new LoginRequest() { Email = "mail@mail.com", Password = "mdp" });
             Response<LoginResult> result = await _apiClient.ReadFromResponse<Response<LoginResult>>(response);
 
-            bool success = result.IsSuccess;
-
-            if(success)
+            if(result.IsSuccess)
             {
-                await NavigationService.PushAsync(new PlacesView(result.Data.accessToken));
+                await NavigationService.PushAsync(new PlacesView(result.Data.AccessToken));
             }
         }
     }
