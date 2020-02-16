@@ -8,7 +8,11 @@ namespace FourPlaces.Models
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return "https://td-api.julienmialon.com/images/" + (int)value;
+            if ((int)value != 0)
+            {
+                return "https://td-api.julienmialon.com/images/" + (int)value;
+            }
+            return "";
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

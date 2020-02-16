@@ -2,12 +2,8 @@
 using System.Net.Http;
 using FourPlaces.Services;
 using FourPlaces.Dtos;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Collections.ObjectModel;
-using System;
-using System.Windows.Input;
-using Xamarin.Forms;
+using FourPlaces.Views;
 
 namespace FourPlaces.ViewModels
 {
@@ -28,6 +24,14 @@ namespace FourPlaces.ViewModels
         public PlaceItemSummary SelectedPlace
         {
             get => _selectedPlace;
+            set
+            {
+                if (SetProperty(ref _selectedPlace, value) && value != null)
+                {
+                    ShowPlaceAction(value);
+                    SelectedPlace = null;
+                }
+            }
 
         }
 
@@ -63,6 +67,10 @@ namespace FourPlaces.ViewModels
             {
                 PlaceList = result.Data;
             }
+        }
+        public async void ShowPlaceAction(PlaceItemSummary place)
+        {
+            await NavigationService.PushAsync(new DetailsView(_token, place.Id)) ;
         }
     }
 }

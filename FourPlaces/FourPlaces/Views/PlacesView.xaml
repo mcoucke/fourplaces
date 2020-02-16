@@ -19,6 +19,7 @@
             <ListView  
                 ItemsSource="{Binding PlaceList}"
                 SelectedItem="{Binding SelectedPlace, Mode=TwoWay}"
+                SeparatorColor="Black"
                 RowHeight="100">
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="local:PlaceItemSummary">
