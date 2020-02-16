@@ -52,7 +52,7 @@
                                             <Label Text="{Binding Author.FirstName}" 
                                                HorizontalOptions="Center"
                                                FontSize="Medium"/>
-                                            <Label Text="{Binding Author.LastName}}" 
+                                            <Label Text="{Binding Author.LastName}" 
                                                HorizontalOptions="Center"
                                                FontSize="Medium"/>
                                         </StackLayout>
