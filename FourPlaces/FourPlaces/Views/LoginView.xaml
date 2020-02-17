@@ -13,11 +13,18 @@
                HorizontalOptions="Center"
                FontSize="Title"
                VerticalOptions="StartAndExpand"/>
-        <Entry Placeholder="Username" Text="{Binding Username}" />
-        <Entry Placeholder="Password" Text="{Binding Password}"/>
+        <Entry Placeholder="Username" 
+               Text="{Binding Username}" />
+        <Entry Placeholder="Password" 
+               Text="{Binding Password}"
+               IsPassword="True" />
         <Button Text="Log in"
                 VerticalOptions="CenterAndExpand"
                 HorizontalOptions="Center"
                 Command="{Binding LoginCommand}" />
+        <Button Text="S'inscrire"
+                VerticalOptions="CenterAndExpand"
+                HorizontalOptions="Center"
+                Command="{Binding RegisterCommand}" />
     </StackLayout>
 </forms:BaseContentPage>

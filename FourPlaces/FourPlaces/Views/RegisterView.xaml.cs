@@ -3,12 +3,12 @@ using Storm.Mvvm.Forms;
 
 namespace FourPlaces.Views
 {
-    public partial class DetailsView : BaseContentPage
+    public partial class RegisterView : BaseContentPage
     {
-        public DetailsView(int id)
+        public RegisterView()
         {
             InitializeComponent();
-            BindingContext = new DetailsViewModel(id);
+            BindingContext = new RegisterViewModel();
         }
     }
 }

@@ -12,7 +12,6 @@ namespace FourPlaces.ViewModels
 {
     class DetailsViewModel : ViewModelBase
     {
-        private string _token;
         private string _url = "https://td-api.julienmialon.com/places/";
         private ApiClient _apiClient;
 
@@ -68,9 +67,8 @@ namespace FourPlaces.ViewModels
         }
 
 
-        public DetailsViewModel(string accessToken, int id)
+        public DetailsViewModel(int id)
         {
-            _token = accessToken;
             _apiClient = new ApiClient();
             OpenLocationCommand = new Command(OpenLocationAction);
             GetPlace(id);
@@ -79,7 +77,8 @@ namespace FourPlaces.ViewModels
 
         private async void GetPlace(int id)
         {
-            HttpResponseMessage response = await _apiClient.Execute(HttpMethod.Get, _url + id, null, _token);
+            HttpResponseMessage response = 
+                await _apiClient.Execute(HttpMethod.Get, _url + id, null, App.Current.Properties["AccessTokken"].ToString());
             Response<PlaceItem> result = await _apiClient.ReadFromResponse<Response<PlaceItem>>(response);
 
             if (result.IsSuccess)

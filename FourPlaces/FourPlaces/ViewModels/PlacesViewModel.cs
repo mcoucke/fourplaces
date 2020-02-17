@@ -4,14 +4,17 @@ using FourPlaces.Services;
 using FourPlaces.Dtos;
 using System.Collections.ObjectModel;
 using FourPlaces.Views;
+using System.Windows.Input;
+using Xamarin.Forms;
 
 namespace FourPlaces.ViewModels
 {
     class PlacesViewModel : ViewModelBase
     {
-        private string _token;
         private string _url = "https://td-api.julienmialon.com/places";
         private ApiClient _apiClient;
+
+        public ICommand ViewProfileCommand { get; }
 
         private ObservableCollection<PlaceItemSummary> _placeList;
         public ObservableCollection<PlaceItemSummary> PlaceList
@@ -48,18 +51,19 @@ namespace FourPlaces.ViewModels
             get => _imageId;
             set => SetProperty(ref _imageId, value);
         }
-        public PlacesViewModel(string accessToken)
+        public PlacesViewModel()
         {
             _apiClient = new ApiClient();
-            _token = accessToken;
 
             PlaceList = new ObservableCollection<PlaceItemSummary>();
+            ViewProfileCommand = new Command(ViewProfileAction);
             GetPlaces();
         }
 
         private async void GetPlaces()
         {
-            HttpResponseMessage response = await _apiClient.Execute(HttpMethod.Get, _url, null, _token);
+            HttpResponseMessage response = 
+                await _apiClient.Execute(HttpMethod.Get, _url, null, App.Current.Properties["AccessTokken"].ToString());
             Response<ObservableCollection<PlaceItemSummary>> result =   
                 await _apiClient.ReadFromResponse<Response<ObservableCollection<PlaceItemSummary>>>(response);
 
@@ -70,7 +74,12 @@ namespace FourPlaces.ViewModels
         }
         public async void ShowPlaceAction(PlaceItemSummary place)
         {
-            await NavigationService.PushAsync(new DetailsView(_token, place.Id)) ;
+            await NavigationService.PushAsync(new DetailsView(place.Id)) ;
+        }
+
+        public async void ViewProfileAction()
+        {
+            await NavigationService.PushAsync(new ProfileView());
         }
     }
 }

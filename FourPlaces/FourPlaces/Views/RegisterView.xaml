@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<forms:BaseContentPage
+             xmlns:forms="clr-namespace:Storm.Mvvm.Forms;assembly=Storm.Mvvm.Forms" 
+             xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="FourPlaces.Views.RegisterView">
+    <StackLayout VerticalOptions="FillAndExpand">
+        <Label Text="Inscription" 
+               HorizontalOptions="Center"
+               FontSize="Title"
+               VerticalOptions="StartAndExpand"/>
+        <StackLayout Orientation="Horizontal"
+                     HorizontalOptions="Center">
+            <Entry Placeholder="Identifiant"
+                   WidthRequest="150"
+                   Text="{Binding Email}" />
+            <Entry Placeholder="Mot de passe"
+                   WidthRequest="150"
+                   Text="{Binding Password}"
+                   IsPassword="True" />
+        </StackLayout>
+        <StackLayout Orientation="Horizontal"
+                     HorizontalOptions="Center">
+            <Entry Placeholder="Prénom"
+                   WidthRequest="150"
+                   Text="{Binding FirstName}" />
+            <Entry Placeholder="Nom"
+                   WidthRequest="150"
+                   Text="{Binding LastName}" />
+        </StackLayout>
+        <Button Text="S'inscrire"
+                VerticalOptions="CenterAndExpand"
+                HorizontalOptions="Center"
+                Command="{Binding RegisterCommand}" />
+    </StackLayout>
+</forms:BaseContentPage>

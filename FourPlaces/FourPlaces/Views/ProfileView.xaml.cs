@@ -3,12 +3,12 @@ using FourPlaces.ViewModels;
 
 namespace FourPlaces.Views
 {
-    public partial class PlacesView : BaseContentPage
+    public partial class ProfileView : BaseContentPage
     {
-        public PlacesView()
+        public ProfileView()
         {
             InitializeComponent();
-            BindingContext = new PlacesViewModel();
+            BindingContext = new ProfileViewModel();
         }
     }
 }

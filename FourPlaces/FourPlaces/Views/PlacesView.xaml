@@ -41,5 +41,11 @@
                 </ListView.ItemTemplate>
             </ListView>
         </ScrollView>
+        <StackLayout Orientation="Horizontal"
+                     HorizontalOptions="Center">
+            <Button Text="Ajouter un lieu" />
+            <Button Text="Voir mon profile"
+                    Command="{Binding ViewProfileCommand}" />
+        </StackLayout>
     </StackLayout>
 </forms:BaseContentPage>
