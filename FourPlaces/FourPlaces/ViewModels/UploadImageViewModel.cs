@@ -18,12 +18,16 @@ namespace FourPlaces.ViewModels
 {
     class UploadImageViewModel : ViewModelBase
     {
-        private string _url = "https://td-api.julienmialon.com/images";
+        private string _urlImage = "https://td-api.julienmialon.com/images";
+        private string _urlUser = "https://td-api.julienmialon.com/me";
+        private string _firstName;
+        private string _lastName;
         private byte[] _imageAsBytes;
         private ApiClient _apiClient;
 
         public ICommand UploadImageCommand { get; }
         public ICommand TakePhotoCommand { get; }
+        public ICommand PickPhotoCommand { get; }
 
         private ImageSource _imageSrc;
         public ImageSource ImageSrc
@@ -39,11 +43,14 @@ namespace FourPlaces.ViewModels
             set => SetProperty(ref _takePhotoClicked, value);
         }
 
-        public UploadImageViewModel()
+        public UploadImageViewModel(string firstname, string lastname)
         {
             _apiClient = new ApiClient();
             UploadImageCommand = new Command(UploadImageAction);
             TakePhotoCommand = new Command(TakePhotoAction);
+            PickPhotoCommand = new Command(PickPhotoAction);
+            _firstName = firstname;
+            _lastName = lastname;
 
         }
         private async void TakePhotoAction()
@@ -52,19 +59,20 @@ namespace FourPlaces.ViewModels
 
             if (!CrossMedia.Current.IsCameraAvailable || !CrossMedia.Current.IsTakePhotoSupported)
             {
-                //await DisplayAlert("No Camera", ":( No camera available.", "OK");
+                await Application.Current.MainPage.DisplayAlert("No Camera", ":( No camera available.", "OK");
                 return;
             }
 
             var file = await CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions
             {
-                DefaultCamera = CameraDevice.Front
+                DefaultCamera = CameraDevice.Front,
+                PhotoSize = PhotoSize.Small
             });
 
             if (file == null)
                 return;
 
-            //await DisplayAlert("File Location", file.Path, "OK");
+            await Application.Current.MainPage.DisplayAlert("File Location", file.Path, "OK");
 
             ImageSrc = ImageSource.FromStream(() =>
             {
@@ -72,24 +80,70 @@ namespace FourPlaces.ViewModels
                 return stream;
             });
 
-            _imageAsBytes = null;
-            using (var memoryStream = new MemoryStream())
+            _imageAsBytes = FromImageToBinary(file.Path);
+        }
+
+        private async void PickPhotoAction()
+        {
+            await CrossMedia.Current.Initialize();
+
+            if (!CrossMedia.Current.IsCameraAvailable || !CrossMedia.Current.IsTakePhotoSupported)
             {
-                file.GetStream().CopyTo(memoryStream);
-                file.Dispose();
-                _imageAsBytes = memoryStream.ToArray();
+                await Application.Current.MainPage.DisplayAlert("No Camera", ":( No camera available.", "OK");
+                return;
             }
+
+            var file = await CrossMedia.Current.PickPhotoAsync();
+
+            if (file == null)
+                return;
+
+            await Application.Current.MainPage.DisplayAlert("File Location", file.Path, "OK");
+
+            ImageSrc = ImageSource.FromStream(() =>
+            {
+                var stream = file.GetStream();
+                return stream;
+            });
+
+            _imageAsBytes = FromImageToBinary(file.Path);
         }
 
         public async void UploadImageAction()
         {
-            HttpResponseMessage response = await _apiClient.UploadImage(HttpMethod.Post, _url, _imageAsBytes, App.Current.Properties["AccessTokken"].ToString());
-            Response<ImageItem> result = await _apiClient.ReadFromResponse<Response<ImageItem>>(response);
-
-            if (result.IsSuccess)
+            HttpResponseMessage response_upload = await _apiClient.UploadImage(HttpMethod.Post, _urlImage, _imageAsBytes, App.Current.Properties["AccessTokken"].ToString());
+            Response<ImageItem> result_upload = await _apiClient.ReadFromResponse<Response<ImageItem>>(response_upload);
+            if (result_upload.IsSuccess)
             {
-                Console.WriteLine("IMAGEID : " + result.Data.Id);
+                HttpResponseMessage response = await _apiClient.Execute(new HttpMethod("PATCH"), _urlUser, 
+                    new UpdateProfileRequest() { FirstName = _firstName, LastName = _lastName, ImageId = result_upload.Data.Id },
+                    App.Current.Properties["AccessTokken"].ToString());
+                Console.WriteLine("response passed");
+                Response<UserItem> result = await _apiClient.ReadFromResponse<Response<UserItem>>(response);
+                Console.WriteLine("result passed");
+                if (result.IsSuccess)
+                {
+                    Console.WriteLine("profile updated");
+                }
+                else
+                {
+                    Console.WriteLine(result.ErrorMessage);
+                }
             }
+            else
+            {
+                Console.WriteLine(result_upload.ErrorMessage);
+            }
+            await NavigationService.PopAsync();
+        }
+
+        public byte[] FromImageToBinary(string imagePath)
+        {
+            FileStream fileStream = new FileStream(imagePath, FileMode.Open, FileAccess.Read);
+            byte[] buffer = new byte[fileStream.Length];
+            fileStream.Read(buffer, 0, (int)fileStream.Length);
+            fileStream.Close();
+            return buffer;
         }
     }
 }

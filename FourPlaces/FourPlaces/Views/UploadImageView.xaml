@@ -9,8 +9,12 @@
     x:Class="FourPlaces.Views.UploadImageView">
       <StackLayout>
         <Label Text="Hello Xamarin.Forms!" />
-        <Button Text="Choisissez une photo"
-                Command="{Binding TakePhotoCommand}" />
+        <StackLayout Orientation="Horizontal">
+            <Button Text="Prendre une photo"
+                    Command="{Binding TakePhotoCommand}" />
+            <Button Text="Choisir une photo"
+                    Command="{Binding PickPhotoCommand}" />
+        </StackLayout>
         <Image Aspect="AspectFit"
                VerticalOptions="FillAndExpand"
                HorizontalOptions="FillAndExpand"

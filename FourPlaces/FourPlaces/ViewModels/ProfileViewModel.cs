@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -77,7 +78,13 @@ namespace FourPlaces.ViewModels
 
         private async void EditImageAction()
         {
-            await NavigationService.PushAsync(new UploadImageView());
+            await NavigationService.PushAsync(new UploadImageView(FirstName, LastName));
+        }
+
+        public override Task OnResume()
+        {
+            GetProfile();
+            return base.OnResume();
         }
     }
 }

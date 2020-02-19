@@ -8,36 +8,38 @@
     xmlns:model="clr-namespace:FourPlaces.Models"
     mc:Ignorable="d"
     x:Class="FourPlaces.Views.ProfileView">
-    <StackLayout>
-        <StackLayout.Resources>
-            <model:ImgUrlConverter x:Key="ImgUrlConverter" />
-        </StackLayout.Resources>
-        <Label Text="Mon profile"
-               FontSize="Title"
-               HorizontalOptions="Center" />
-        <Image Source="{Binding ImageId, Converter={StaticResource ImgUrlConverter}}"
-               Aspect="AspectFit" />
-        <StackLayout Orientation="Horizontal"
-                     Margin="20, 5, 0, 0">
-            <Label Text="Prénom : " FontSize="Medium"/>
-            <Label Text="{Binding FirstName}" FontSize="Medium" />
+    <ScrollView>
+        <StackLayout>
+            <StackLayout.Resources>
+                <model:ImgUrlConverter x:Key="ImgUrlConverter" />
+            </StackLayout.Resources>
+            <Label Text="Mon profile"
+                   FontSize="Title"
+                   HorizontalOptions="Center" />
+            <Image Source="{Binding ImageId, Converter={StaticResource ImgUrlConverter}}"
+                   Aspect="AspectFit" />
+            <StackLayout Orientation="Horizontal"
+                         Margin="20, 5, 0, 0">
+                <Label Text="Prénom : " FontSize="Medium"/>
+                <Label Text="{Binding FirstName}" FontSize="Medium" />
+            </StackLayout>
+            <StackLayout Orientation="Horizontal"
+                         Margin="20, 5, 0, 0">
+                <Label Text="Nom : " FontSize="Medium" />
+                <Label Text="{Binding LastName}" FontSize="Medium" />
+            </StackLayout>
+            <StackLayout Orientation="Horizontal"
+                         Margin="20, 5, 0, 0">
+                <Label Text="Email : " FontSize="Medium" />
+                <Label Text="{Binding Email}" FontSize="Medium" />
+            </StackLayout>
+            <StackLayout Orientation="Horizontal"
+                         HorizontalOptions="Center">
+                <Button Text="Modifier mes infos" />
+                <Button Text="Modifier mon image"
+                        Command="{Binding EditImageCommand }"/>
+            </StackLayout>
         </StackLayout>
-        <StackLayout Orientation="Horizontal"
-                     Margin="20, 5, 0, 0">
-            <Label Text="Nom : " FontSize="Medium" />
-            <Label Text="{Binding LastName}" FontSize="Medium" />
-        </StackLayout>
-        <StackLayout Orientation="Horizontal"
-                     Margin="20, 5, 0, 0">
-            <Label Text="Email : " FontSize="Medium" />
-            <Label Text="{Binding Email}" FontSize="Medium" />
-        </StackLayout>
-        <StackLayout Orientation="Horizontal"
-                     HorizontalOptions="Center">
-            <Button Text="Modifier mes infos" />
-            <Button Text="Modifier mon image"
-                    Command="{Binding EditImageCommand }"/>
-        </StackLayout>
+    </ScrollView>
 
-    </StackLayout>
 </forms:BaseContentPage>

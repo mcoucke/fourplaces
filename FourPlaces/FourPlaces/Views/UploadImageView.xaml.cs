@@ -14,10 +14,10 @@ namespace FourPlaces.Views
     public partial class UploadImageView : BaseContentPage
     {
 
-        public UploadImageView()
+        public UploadImageView(string firstname, string lastname)
         {
             InitializeComponent();
-            BindingContext = new UploadImageViewModel();
+            BindingContext = new UploadImageViewModel(firstname, lastname);
         }
     }
 }
