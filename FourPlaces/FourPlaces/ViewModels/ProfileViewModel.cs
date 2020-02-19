@@ -1,11 +1,14 @@
 ﻿using FourPlaces.Dtos;
 using FourPlaces.Services;
+using FourPlaces.Views;
 using Storm.Mvvm;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Net.Http;
 using System.Text;
+using System.Windows.Input;
+using Xamarin.Forms;
 
 namespace FourPlaces.ViewModels
 {
@@ -13,6 +16,7 @@ namespace FourPlaces.ViewModels
     {
         private string _url = "https://td-api.julienmialon.com/me";
         private ApiClient _apiClient;
+        public ICommand EditImageCommand { get; }
 
         private UserItem _user;
         public UserItem User
@@ -52,6 +56,7 @@ namespace FourPlaces.ViewModels
         public ProfileViewModel()
         {
             _apiClient = new ApiClient();
+            EditImageCommand = new Command(EditImageAction);
             GetProfile();
         }
         private async void GetProfile()
@@ -68,6 +73,11 @@ namespace FourPlaces.ViewModels
                 LastName = _user.LastName;
                 ImageId = _user.ImageId == null ? 0 : _user.ImageId.Value;
             }
+        }
+
+        private async void EditImageAction()
+        {
+            await NavigationService.PushAsync(new UploadImageView());
         }
     }
 }

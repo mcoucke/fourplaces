@@ -2,6 +2,7 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using System.Net.Http.Headers;
 
 namespace FourPlaces.Services
 {
@@ -31,6 +32,22 @@ namespace FourPlaces.Services
 			string result = await response.Content.ReadAsStringAsync();
 
 			return JsonConvert.DeserializeObject<T>(result);
+		}
+
+		public async Task<HttpResponseMessage> UploadImage(HttpMethod method, string url, byte[] imageData, string token)
+		{
+			HttpRequestMessage request = new HttpRequestMessage(method, url);
+			
+			request.Headers.Add("Authorization", $"Bearer {token}");
+
+			var imageContent = new ByteArrayContent(imageData);
+			imageContent.Headers.ContentType = MediaTypeHeaderValue.Parse("image/jpeg");
+
+			MultipartFormDataContent requestContent = new MultipartFormDataContent();
+			requestContent.Add(imageContent, "file", "file.jpg");
+			request.Content = requestContent;
+
+			return await _client.SendAsync(request);
 		}
 	}
 }

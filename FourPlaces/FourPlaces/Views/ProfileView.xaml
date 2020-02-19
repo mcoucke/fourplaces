@@ -35,7 +35,8 @@
         <StackLayout Orientation="Horizontal"
                      HorizontalOptions="Center">
             <Button Text="Modifier mes infos" />
-            <Button Text="Modifier mon image" />
+            <Button Text="Modifier mon image"
+                    Command="{Binding EditImageCommand }"/>
         </StackLayout>
 
     </StackLayout>
