@@ -8,8 +8,8 @@
     mc:Ignorable="d"
     x:Class="FourPlaces.Views.UploadImageView">
       <StackLayout>
-        <Label Text="Hello Xamarin.Forms!" />
-        <StackLayout Orientation="Horizontal">
+        <StackLayout Orientation="Horizontal"
+                     HorizontalOptions="Center">
             <Button Text="Prendre une photo"
                     Command="{Binding TakePhotoCommand}" />
             <Button Text="Choisir une photo"

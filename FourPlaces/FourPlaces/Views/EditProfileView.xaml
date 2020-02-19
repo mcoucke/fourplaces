@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<forms:BaseContentPage
+    xmlns:forms="clr-namespace:Storm.Mvvm.Forms;assembly=Storm.Mvvm.Forms" xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="FourPlaces.Views.EditProfileView">
+      <StackLayout>
+        <Label Text="Modifier mon profil"
+               Margin="0, 20, 0, 50"
+               FontSize="Title"
+               HorizontalOptions="Center" />
+        <StackLayout Orientation="Horizontal"
+                     Margin="20, 5, 0, 0">
+            <Label Text="Prénom : " 
+                   FontSize="Large"
+                   VerticalOptions="Center"/>
+            <Entry Text="{Binding FirstName}"
+                   HorizontalOptions="FillAndExpand"
+                   FontSize="Large" />
+        </StackLayout>
+        <StackLayout Orientation="Horizontal"
+                     Margin="20, 5, 0, 0">
+            <Label Text="Nom : " 
+                   FontSize="Large"
+                   VerticalOptions="Center" />
+            <Entry Text="{Binding LastName}" 
+                   HorizontalOptions="FillAndExpand"
+                   FontSize="Large" />
+        </StackLayout>
+        <Button Text="Valider"
+                Margin="0, 50, 0, 0"
+                HorizontalOptions="Center"
+                  Command="{Binding EditProfileCommand}" />
+    </StackLayout>
+</forms:BaseContentPage>

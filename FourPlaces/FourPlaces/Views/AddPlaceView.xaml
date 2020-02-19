@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<forms:BaseContentPage
+             xmlns:forms="clr-namespace:Storm.Mvvm.Forms;assembly=Storm.Mvvm.Forms" xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="FourPlaces.Views.AddPlaceView">
+    <ScrollView>
+        <StackLayout>
+            <Label Text="Ajouter un lieu"
+               FontSize="Title"
+               HorizontalOptions="Center"/>
+            <Entry Placeholder="Titre" Text="{Binding Title}" />
+            <Editor Placeholder="Description" Text="{Binding Description}" />
+            <StackLayout Orientation="Horizontal"
+                     HorizontalOptions="Center">
+                <Entry Placeholder="Latitude" Text="{Binding Latitude}" />
+                <Entry Placeholder="Longitude" Text="{Binding Longitude}" />
+                <Button Text="Position actuelle"
+                        Command="{Binding GetCurrentLocationCommand}"/>
+            </StackLayout>
+            <StackLayout Orientation="Horizontal"
+                     HorizontalOptions="Center">
+                <Button Text="Choisir une image"
+                        Command="{Binding PickPictureCommand}"/>
+                <Label Text=" ou "
+                   FontSize="Medium"
+                   VerticalOptions="Center"/>
+                <Button Text="Prendre une photo"
+                        Command="{Binding TakePictureCommand}"/>
+            </StackLayout>
+            <Image Aspect="AspectFit"
+                   VerticalOptions="FillAndExpand"
+                   HorizontalOptions="FillAndExpand"
+                   Source="{Binding ImageSrc}"/>
+            <Button Text="Ajouter un lieu"
+                    HorizontalOptions="Center"
+                    Command="{Binding AddPlaceCommand}"/>
+        </StackLayout>
+    </ScrollView>
+</forms:BaseContentPage>

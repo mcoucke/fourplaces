@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using FourPlaces.Views;
 using System.Windows.Input;
 using Xamarin.Forms;
+using System.Threading.Tasks;
 
 namespace FourPlaces.ViewModels
 {
@@ -15,6 +16,7 @@ namespace FourPlaces.ViewModels
         private ApiClient _apiClient;
 
         public ICommand ViewProfileCommand { get; }
+        public ICommand AddPlaceCommand { get; }
 
         private ObservableCollection<PlaceItemSummary> _placeList;
         public ObservableCollection<PlaceItemSummary> PlaceList
@@ -57,6 +59,7 @@ namespace FourPlaces.ViewModels
 
             PlaceList = new ObservableCollection<PlaceItemSummary>();
             ViewProfileCommand = new Command(ViewProfileAction);
+            AddPlaceCommand = new Command(AddPlaceAction);
             GetPlaces();
         }
 
@@ -80,6 +83,17 @@ namespace FourPlaces.ViewModels
         public async void ViewProfileAction()
         {
             await NavigationService.PushAsync(new ProfileView());
+        }
+
+        public async void AddPlaceAction()
+        {
+            await NavigationService.PushAsync(new AddPlaceView());
+        }
+
+        public override Task OnResume()
+        {
+            GetPlaces();
+            return base.OnResume();
         }
     }
 }

@@ -2,15 +2,10 @@
 using FourPlaces.Services;
 using Plugin.Media;
 using Plugin.Media.Abstractions;
-using Plugin.Permissions;
-using Plugin.Permissions.Abstractions;
 using Storm.Mvvm;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -35,14 +30,6 @@ namespace FourPlaces.ViewModels
             get => _imageSrc;
             set => SetProperty(ref _imageSrc, value);
         }
-
-        private EventHandler _takePhotoClicked;
-        public EventHandler TakePhotoClicked
-        {
-            get => _takePhotoClicked;
-            set => SetProperty(ref _takePhotoClicked, value);
-        }
-
         public UploadImageViewModel(string firstname, string lastname)
         {
             _apiClient = new ApiClient();
@@ -118,23 +105,21 @@ namespace FourPlaces.ViewModels
                 HttpResponseMessage response = await _apiClient.Execute(new HttpMethod("PATCH"), _urlUser, 
                     new UpdateProfileRequest() { FirstName = _firstName, LastName = _lastName, ImageId = result_upload.Data.Id },
                     App.Current.Properties["AccessTokken"].ToString());
-                Console.WriteLine("response passed");
                 Response<UserItem> result = await _apiClient.ReadFromResponse<Response<UserItem>>(response);
-                Console.WriteLine("result passed");
                 if (result.IsSuccess)
                 {
-                    Console.WriteLine("profile updated");
+                    Console.WriteLine("image uploaded");
+                    await NavigationService.PopAsync();
                 }
                 else
                 {
-                    Console.WriteLine(result.ErrorMessage);
+                    await Application.Current.MainPage.DisplayAlert("Error", "Error while updating profile", "OK");
                 }
             }
             else
             {
-                Console.WriteLine(result_upload.ErrorMessage);
+                await Application.Current.MainPage.DisplayAlert("Error", "Error while updating profile", "OK");
             }
-            await NavigationService.PopAsync();
         }
 
         public byte[] FromImageToBinary(string imagePath)

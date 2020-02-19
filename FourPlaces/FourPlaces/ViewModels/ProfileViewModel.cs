@@ -18,6 +18,7 @@ namespace FourPlaces.ViewModels
         private string _url = "https://td-api.julienmialon.com/me";
         private ApiClient _apiClient;
         public ICommand EditImageCommand { get; }
+        public ICommand EditProfileCommand { get; }
 
         private UserItem _user;
         public UserItem User
@@ -58,6 +59,7 @@ namespace FourPlaces.ViewModels
         {
             _apiClient = new ApiClient();
             EditImageCommand = new Command(EditImageAction);
+            EditProfileCommand = new Command(EditProfileAction);
             GetProfile();
         }
         private async void GetProfile()
@@ -79,6 +81,11 @@ namespace FourPlaces.ViewModels
         private async void EditImageAction()
         {
             await NavigationService.PushAsync(new UploadImageView(FirstName, LastName));
+        }
+
+        private async void EditProfileAction()
+        {
+            await NavigationService.PushAsync(new EditProfileView(ImageId));
         }
 
         public override Task OnResume()
